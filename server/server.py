@@ -10,6 +10,7 @@ connection = mysql.connector.connect(
 # Створення об'єкта курсора
 cursor = connection.cursor()
 list_resource=["people","food","tree","stone","oil","iron","gold"]
+list_buildings=["farm","sawmill","mine_stone","oil_well","mine_iron","mine_gold","barrack","smithy"]
 import time
 import random
 import socket
@@ -76,6 +77,8 @@ async def new_connect(input_message,output_message):
             cursor.execute("INSERT INTO gold (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["gold"],time_now))
             cursor.execute("INSERT INTO oil (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["oil"],time_now))
             connection.commit()
+
+
             #for i in range(1000):
             #    print(i)
             #    await asyncio.sleep(0.1)

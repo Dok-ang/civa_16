@@ -203,7 +203,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
     new_buildings_count INT,        
     id_user INT,
     FOREIGN KEY (id_user)  REFERENCES {1}(id_user) ON DELETE CASCADE ON UPDATE CASCADE                   
-)""".format("barrack",users)) # казарма
+)""".format("barrack",users)) # казарма солдат
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
     id_smithy INT AUTO_INCREMENT PRIMARY KEY,
