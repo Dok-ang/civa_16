@@ -10,7 +10,8 @@ connection = mysql.connector.connect(
 # Створення об'єкта курсора
 cursor = connection.cursor()
 list_resource=["people","food","tree","stone","oil","iron","gold"]
-list_buildings=["farm","sawmill","mine_stone","oil_well","mine_iron","mine_gold","barrack","smithy"]
+list_buildings=["farm","sawmill","mine_stone","oil_well","mine_iron","mine_gold","barracks_soldiers","transport","barracks_arrows","barracks_berserkers","tank_factory","airfield"]
+list_army=["soldiers","transport","arrows","berserkers","tanks","helicopter"]
 import time
 import random
 import socket
@@ -76,7 +77,13 @@ async def new_connect(input_message,output_message):
             cursor.execute("INSERT INTO iron (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["iron"],time_now))
             cursor.execute("INSERT INTO gold (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["gold"],time_now))
             cursor.execute("INSERT INTO oil (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["oil"],time_now))
+            
+            #for bild in list_buildings:
+            #    cursor.execute(f"INSERT INTO {bild} (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["people"],time_now))
+            
+            
             connection.commit()
+
 
 
             #for i in range(1000):
