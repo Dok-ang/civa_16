@@ -5,7 +5,7 @@ connection = mysql.connector.connect(
     user='root',
     password='root',
     port=2023,  # порт, на якому працює MySQL
-    database="civilization"
+    database="civilization122"
 )
 # Створення об'єкта курсора
 cursor = connection.cursor()
@@ -78,9 +78,10 @@ async def new_connect(input_message,output_message):
             cursor.execute("INSERT INTO gold (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["gold"],time_now))
             cursor.execute("INSERT INTO oil (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["oil"],time_now))
             
-            #for bild in list_buildings:
-            #    cursor.execute(f"INSERT INTO {bild} (id_user, count, last_update) VALUES (%s, %s, %s)", (user_id,start_resource["people"],time_now))
-            
+            for build in list_buildings:
+                cursor.execute(f"INSERT INTO {build} (id_user, count, last_update, new_buildings_count) VALUES (%s, %s, %s, %s)", (user_id,0,time_now,0))
+            for army in list_army:
+                cursor.execute(f"INSERT INTO {army} (id_user, count, last_update, new_army_count) VALUES (%s, %s, %s, %s)", (user_id,0,time_now,0))
             
             connection.commit()
 
@@ -100,6 +101,13 @@ async def new_connect(input_message,output_message):
             print("New user")
     elif command["action"]=="resource_mining":
         cursor.execute(f"SELECT * FROM resource")
+        content = cursor.fetchall()
+        resource_mining_speed={}
+        for i in range(len(list_resource)):
+            resource_mining_speed.setdefault(list_resource[i],content[i][2])
+        output_message.write(json.dumps(resource_mining_speed).encode("utf-8"))
+    elif command["action"]=="update_buildings":
+        cursor.execute(f"SELECT * FROM buildings")
         content = cursor.fetchall()
         resource_mining_speed={}
         for i in range(len(list_resource)):

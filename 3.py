@@ -5,7 +5,7 @@ connection = mysql.connector.connect(
     host='localhost',  # або 'localhost' для локального сервера 134.249.176.108
     user='root',
     password='root',
-    database='civilization', # Sakila server_database
+    database='civilization122', # Sakila server_database
     port=2023  # порт, на якому працює MySQL
 )
 

@@ -19,7 +19,9 @@ all_command=[]
 all_priority={
     "reboot":5,
     "update_resource":8,
-    "donat":0
+    "donat":0,
+    "update_buildings":9,
+    "update_army":10
     }
 path=""
 if platform=="android":
@@ -83,6 +85,7 @@ def start_game():
     date=json.dumps(command)
     s.close()
 
+
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     while True:
         try:
@@ -90,7 +93,7 @@ def start_game():
             break
         except:
             pass   
-
+    
     s.sendall(date.encode("utf-8"))
     date=s.recv(1024).decode("utf-8")
     mys=json.loads(date)
@@ -103,6 +106,27 @@ def start_game():
     resource_time_mining_speed.update(rtms)
     s.close()
     
+
+"""    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    while True:
+        try:
+            s.connect(("80.77.36.110",2024))
+            break
+        except:
+            pass   
+    date="update_buildings"
+    s.sendall(date.encode("utf-8"))
+    date=s.recv(1024).decode("utf-8")
+    my_buildings=json.loads(date) # словник з інформацією про будівлі
+
+    resource_mining_speed.update(mys)
+    time_now=time.time()
+    
+    s.close()
+
+    #update_army"""
+
+
 
 class Policy(Screen): # ігровий клас
     name="policy" # ім'я гри для переходу між вікнами
