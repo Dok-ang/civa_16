@@ -48,8 +48,9 @@ async def new_connect(input_message,output_message):
             #print(content)
             for table_name in list_resource:
                 cursor.execute(f"SELECT * FROM {table_name} WHERE id_user=%s",(command["id"],))
-                #print(content)
+                #print(content[0])
                 content = cursor.fetchall()
+                print(content)
                 count=content[0][1]
                 last_update=content[0][2]
                 time_now=int(time.time())
@@ -81,6 +82,7 @@ async def new_connect(input_message,output_message):
             for build in list_buildings:
                 cursor.execute(f"INSERT INTO {build} (id_user, count, last_update, new_buildings_count) VALUES (%s, %s, %s, %s)", (user_id,0,time_now,0))
             for army in list_army:
+                print(army)
                 cursor.execute(f"INSERT INTO {army} (id_user, count, last_update, new_army_count) VALUES (%s, %s, %s, %s)", (user_id,0,time_now,0))
             
             connection.commit()

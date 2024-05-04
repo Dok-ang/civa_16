@@ -10,8 +10,9 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 # Створення бази даних (якщо її ще не існує)
 name_base="civilization122"
-cursor.execute(f'DROP DATABASE IF EXISTS {name_base}')
-connection.commit()
+"""cursor.execute(f'DROP DATABASE IF EXISTS {name_base}')
+connection.commit()"""
+
 create_database_query = "CREATE DATABASE IF NOT EXISTS {0}".format(name_base)
 cursor.execute(create_database_query)
 # Вибір бази даних
@@ -138,7 +139,7 @@ data = ("mine_gold", 1000, 1, 2, 1, 10, 5, 0, 0, 50)
 cursor.execute(command, data)
 data = ("barracks_soldiers", 1000, 1, 2, 1, 10, 5, 0, 0, 50)
 cursor.execute(command, data)
-data = ("transport", 1000, 1, 2, 1, 10, 5, 0, 0, 50)
+data = ("barracks_transport", 1000, 1, 2, 1, 10, 5, 0, 0, 50)
 cursor.execute(command, data)
 data = ("barracks_arrows", 1000, 1, 2, 1, 10, 5, 0, 0, 50)
 cursor.execute(command, data)
@@ -219,13 +220,13 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
 )""".format("barracks_soldiers",users)) # казарма солдат баланс
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
-    id_transport INT AUTO_INCREMENT PRIMARY KEY,
+    id_barracks_transport INT AUTO_INCREMENT PRIMARY KEY,
     count INT,
     last_update INT, 
     new_buildings_count INT,        
     id_user INT,
     FOREIGN KEY (id_user)  REFERENCES {1}(id_user) ON DELETE CASCADE ON UPDATE CASCADE                   
-)""".format("transport",users)) # transport
+)""".format("barracks_transport",users)) # transport
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
     id_barracks_arrows INT AUTO_INCREMENT PRIMARY KEY,
@@ -287,7 +288,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
 # 
 
 # Вставка даних в таблицю
-command = "INSERT INTO {0} (name, mining_speed, people, food, tree, stone, oil, iron, gold, health, attack, protection, coefficient, inventory_capacity, service) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)".format(buildings)
+command = "INSERT INTO {0} (name, mining_speed, people, food, tree, stone, oil, iron, gold, health, attack, protection, coefficient, inventory_capacity, service) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)".format(army)
 data = ("soldiers", 1000, 1, 2, 1, 1, 0, 0, 50, 100, 60, 20, 0.5, 2, 1)
 cursor.execute(command, data)
 data = ("transport", 1000, 2, 4, 0, 10, 0, 0, 100, 0, 0, 0, 1, 20, 1)
@@ -310,6 +311,15 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
     id_user INT,
     FOREIGN KEY (id_user)  REFERENCES {1}(id_user) ON DELETE CASCADE ON UPDATE CASCADE                   
 )""".format("soldiers",users)) # soldiers
+
+cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
+    id_transport INT AUTO_INCREMENT PRIMARY KEY,
+    count INT,
+    last_update INT,    
+    new_army_count INT,        
+    id_user INT,
+    FOREIGN KEY (id_user)  REFERENCES {1}(id_user) ON DELETE CASCADE ON UPDATE CASCADE                   
+)""".format("transport",users)) # transport
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
     id_arrows INT AUTO_INCREMENT PRIMARY KEY,
