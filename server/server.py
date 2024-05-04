@@ -10,8 +10,8 @@ connection = mysql.connector.connect(
 # Створення об'єкта курсора
 cursor = connection.cursor()
 list_resource=["people","food","tree","stone","oil","iron","gold"]
-list_buildings=["farm","sawmill","mine_stone","oil_well","mine_iron","mine_gold","barracks_soldiers","transport","barracks_arrows","barracks_berserkers","tank_factory","airfield"]
-list_army=["soldiers","transport","arrows","berserkers","tanks","helicopter"]
+list_buildings=["farm","sawmill","mine_stone","oil_well","mine_iron","mine_gold","barracks_soldiers","barracks_transport","barracks_arrows","barracks_berserkers","tank_factory","airfield"]
+list_army=["soldiers","arrows","berserkers","tanks","helicopter"]
 import time
 import random
 import socket
@@ -46,16 +46,25 @@ async def new_connect(input_message,output_message):
             for i in range(len(list_resource)):
                 resource_mining_speed.setdefault(list_resource[i],content[i][2])
             #print(content)
-            for table_name in list_resource:
+            
+            for table_name in list_buildings:
                 cursor.execute(f"SELECT * FROM {table_name} WHERE id_user=%s",(command["id"],))
-                #print(content[0])
                 content = cursor.fetchall()
                 print(content)
                 count=content[0][1]
                 last_update=content[0][2]
+                new_buildings_count=content[0][3]
+
+            for table_name in list_resource:
+                cursor.execute(f"SELECT * FROM {table_name} WHERE id_user=%s",(command["id"],))
+                #print(content[0])
+                content = cursor.fetchall()
+                #print(content)
+                count=content[0][1]
+                last_update=content[0][2]
                 time_now=int(time.time())
                 time_pas=time_now-last_update
-                count+=time_pas//resource_mining_speed[table_name]
+                count+=time_pas//resource_mining_speed[table_name] # нова кількість ресурсів
                 last_update=time_now-time_pas%resource_mining_speed[table_name]
                 inf.setdefault(table_name,count)
                 cursor.execute(f"UPDATE {table_name} SET count=%s WHERE id_user=%s",(count,command["id"]))
