@@ -226,7 +226,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
     new_buildings_count INT,        
     id_user INT,
     FOREIGN KEY (id_user)  REFERENCES {1}(id_user) ON DELETE CASCADE ON UPDATE CASCADE                   
-)""".format("barracks_transport",users)) # transport
+)""".format("barracks_transport",users)) # barracks_transport
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
     id_barracks_arrows INT AUTO_INCREMENT PRIMARY KEY,
@@ -291,11 +291,11 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS {0} (
 command = "INSERT INTO {0} (name, mining_speed, people, food, tree, stone, oil, iron, gold, health, attack, protection, coefficient, inventory_capacity, service) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)".format(army)
 data = ("soldiers", 1000, 1, 2, 1, 1, 0, 0, 50, 100, 60, 20, 0.5, 2, 1)
 cursor.execute(command, data)
-data = ("transport", 1000, 2, 4, 0, 10, 0, 0, 100, 0, 0, 0, 1, 20, 1)
+data = ("transport", 1000, 1, 2, 1, 1, 0, 0, 50, 100, 60, 20, 0.5, 2, 1)
 cursor.execute(command, data)
-data = ("arrows", 1000, 1, 2, 1, 1, 0, 0, 50, 100, 60, 20, 1, 2, 1)
+data = ("arrows", 1000, 1, 2, 1, 1, 0, 0, 50, 100, 60, 20, 0.5, 2, 1)
 cursor.execute(command, data)
-data = ("berserkers", 1000, 1, 2, 1, 1, 0, 0, 50, 100, 60, 20, 1, 2, 1)
+data = ("berserkers", 1000, 1, 2, 1, 1, 0, 0, 50, 100, 60, 20, 0.5, 2, 1)
 cursor.execute(command, data)
 data = ("tanks", 1000, 1, 2, 1, 1, 0, 0, 50, 100, 60, 20, 1, 2, 1)
 cursor.execute(command, data)
