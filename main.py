@@ -27,22 +27,30 @@ all_priority={
 path=""
 if platform=="android":
     path=os.path.abspath('')+"/"
-
+    local_path=os.path.join(path,"civa") # шлях запису файлів
 if platform=="win":
     w,h=pygame.display.Info().current_w,pygame.display.Info().current_h
     Window.size=[w//2.5,h//6*4]
     Window.left=w/2-Window.size[0]/2
     Window.top=h/2-Window.size[1]/2
+    local_path=os.path.join(os.environ['LOCALAPPDATA'],"civa")
+if not os.path.exists(local_path): #створюємо папку
+    os.makedirs(local_path)
+import json
+if not os.path.exists(os.path.join(local_path,"options.json")):
+    options={"volume": 0.5, "server_connect": False,"text_size":Window.size[0]/15}
+    open(os.path.join(local_path,"options.json"),"w").write(json.dumps(options))
 resource_mining_speed={} # стандартний час збільшення ресурсів без впливу будівель
 resource_time_mining_speed={} # час оновлення
-import json
+
 #options={"volume":0.5}
 #file_options=open("options.txt","w")
 #file_options.write(json.dumps(options))
 #file_options.close()
-file_options=open(path+"file/options.json","r")
+file_options=open(os.path.join(local_path,"options.json"),"r")
 #list_options=file_options.readlines()
 options=json.loads(file_options.read())
+options["text_size"]=Window.size[0]/15
 file_options.close()
 fon_music=pygame.mixer.Sound("music/something_lost-185380.mp3")
 fon_music.play(-1)
@@ -50,14 +58,13 @@ fon_music.play(-1)
 fon_music.set_volume(options["volume"])
 # 1 рядок гучність звуку
 #options={"text_size":Window.size[0]/15,"volume":float(list_options[0])}
-options["text_size"]=Window.size[0]/15
-options["server_connect"]=False
+
 from kivy.uix.screenmanager import Screen, ScreenManager, WipeTransition, SlideTransition, FallOutTransition, CardTransition, SwapTransition
 import socket
 
 def start_game():
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    with open("file/atile.json","r") as f:
+    with open(os.path.join(path,"file/atile.json"),"r") as f:
         reg_options=f.read()
         while True:
             try:
@@ -128,7 +135,10 @@ def start_game():
     #update_army"""
 
 
+import requests
 
+response = requests.get('https://ipinfo.io')
+data = response.json()
 class Policy(Screen): # ігровий клас
     name="policy" # ім'я гри для переходу між вікнами
     def __init__(self): # конструктор класу
@@ -141,9 +151,10 @@ class Trade(Screen): # ігровий клас
         self.add_widget(Button(text="Торгівля",color=[1,1,0,1]))
 class Infrastructure(Screen): # ігровий клас
     name="infrastructure" # ім'я гри для переходу між вікнами
+    background_pic=os.path.join(path,"sprites/city_bg.png")
     def __init__(self): # конструктор класу
         Screen.__init__(self) # звертаємо до конструктора суперкласу
-        self.add_widget(Button(text="Моя інфраструктура",color=[1,1,0,1]))
+        #self.add_widget(Button(text="Моя інфраструктура",color=[1,1,0,1]))
 class Army(Screen): # ігровий клас
     name="army" # ім'я гри для переходу між вікнами
     def __init__(self): # конструктор класу
@@ -153,7 +164,7 @@ class City(Screen): # ігровий клас
     name="city" # ім'я гри для переходу між вікнами
     def __init__(self): # конструктор класу
         Screen.__init__(self) # звертаємо до конструктора суперкласу
-        self.add_widget(Button(text="Моє місто",color=[1,1,0,1]))
+        self.add_widget(Button(text=f"IP: {data['ip']}",color=[1,1,0,1]))
 
 
 thred_game=threading.Thread(target=start_game)
