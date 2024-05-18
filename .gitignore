@@ -1,0 +1,4 @@
+#comment for bebra
+__pycache__
+*cache*.py
+!mycache*
